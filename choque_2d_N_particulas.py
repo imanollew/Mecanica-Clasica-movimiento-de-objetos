@@ -34,7 +34,6 @@ class ParticleBox:
 		"""step once by dt seconds"""
 		self.time_elapsed += dt
 
-		# update positions
 		self.state[:, :2] += dt * self.state[:, 2:]
 		
 		
