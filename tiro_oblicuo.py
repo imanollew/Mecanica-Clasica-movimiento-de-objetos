@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import math
 
 import numpy as np
@@ -25,17 +24,12 @@ class ParticleBox:
 		"""step once by dt seconds"""
 		self.time_elapsed += dt
 
-		# update positions
 		self.state[0, 1] += dt * self.state[0, 3]
 		self.state[0,3] -=9.81*dt
 		self.state[0,0] +=dt*self.state[0,2]
-		#self.state[0,2] =velocidadInicialX*dt
-		#print(self.state[0,1]) #print de altura 
-		#print (self.state[0,0]) #print de distancia
 		if(self.state[0,1]<1.077):
 			self.state[0,2]=0
 
-		# check for crossing boundary
 		crossed_x1 = (self.state[:, 0] < self.bounds[0] + self.size)
 		crossed_x2 = (self.state[:, 0] > self.bounds[1] - self.size)
 		crossed_y1 = (self.state[:, 1] < self.bounds[2] + self.size)
@@ -45,8 +39,6 @@ class ParticleBox:
 		self.state[crossed_y1 | crossed_y2, 3] *= 0
 
 
-#------------------------------------------------------------
-# set up initial state
 dt = 1. / 30 # 30fps  
 angulo=30 #en grados
 velocidadInicial=50 #metros sobre segundos
@@ -61,18 +53,15 @@ init_state[0, 3] = velocidadInicialY   #velocidad en y
 box = ParticleBox(init_state, size=2.5)
 dt = 1. / 30 # 30fps
 
-# First set up the figure, the axis, and the plot element we want to animate
 fig = plt.figure()
 ax = plt.axes(xlim=(0, 300), ylim=(-1, 300))
 particles, = ax.plot([], [], 'bo', ms=5)
 
-# initialization function: plot the background of each frame
 def init():
 	global box
 	particles.set_data([], [])
 	return particles,
 
-# animation function.  This is called sequentially
 def animate(i):
 	global box, dt, ax, fig
 	box.step(dt)
@@ -81,7 +70,6 @@ def animate(i):
 	particles.set_markersize(5)
 	return particles,
 
-# call the animator.  blit=True means only re-draw the parts that have changed.
 anim = animation.FuncAnimation(fig, animate, init_func=init,
                                frames=200, interval=20, blit=True)
 
